@@ -1,4 +1,4 @@
-package com.curso.superheroe.controller;
+package com.curso.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,19 +13,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.function.EntityResponse;
 
-import com.curso.superheroe.entity.Superheroe;
-import com.curso.superheroe.negocio.GestorSuperheroes;
-import com.curso.superheroe.repo.SuperheroeRepoJpa;
+import com.curso.entity.Superheroe;
+import com.curso.entity.Universo;
+import com.curso.repo.SuperheroeRepoJpa;
+import com.curso.service.GestorSuperheroes;
 
 
 //CONTROLLER DE SUPERHEROE
 //AQUI USAMOS JPA
 @RestController
+@RequestMapping("/superheroe")
 public class SuperHeroeController{
 	
 	@Autowired
@@ -42,62 +45,65 @@ public class SuperHeroeController{
 	}
 	
 	//OBTENCIÓN LISTA SUPERHEROES
-	@GetMapping("/superheroes")
+	@GetMapping("/all")
 	 public List <Superheroe> getAllSuperheroes(){
-		final List<Superheroe> resultadoBaseDatos = superheroeService.findAllSuperheroes();
-		return  resultadoBaseDatos;
-	
+		return superheroeService.findAllSuperheroes();
 	}
 	
 	@GetMapping("/id/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	public Optional<Superheroe> getById(@PathVariable Integer id){
-		final Optional <Superheroe> resultadoBD = superheroeService.findSuperById(id);
-		return resultadoBD;
-			
+		return superheroeService.findSuperById(id);
 	}
 	
 	
 	@GetMapping("/name/{nombre}")
+	@ResponseStatus(HttpStatus.OK)
 	public List<Superheroe> getByNombrename(@PathVariable String nombre){
 		return superheroeService.findByNombreContainingService(nombre);
-		
 	}
 
 	
 	//AÑADIR SUPER
-	@PostMapping("/addSuper")
+	@PostMapping("/add")
 	@ResponseStatus(HttpStatus.OK)
-	public Superheroe crearSuperheroe(@RequestBody Superheroe superheroe) {
-		return superheroeService.crear(superheroe);
+	public Superheroe create(@RequestBody Superheroe superheroe) {
+		return superheroeService.create(superheroe);
 	}
 	
 	
 	
 	//OPCION MATAR
-	@PutMapping("/matar/id/{id}")
+	@PutMapping("/matar/{id}")
 	public Superheroe matar(@PathVariable Integer id) {
 		return superheroeService.updateState(id, "muerto");
 	}
 	
 	
 	//OPCION REVIVIR4
-	@PutMapping("/revivir/id/{id}")
+	@PutMapping("/revivir/{id}")
 	public Superheroe revivir(@PathVariable Integer id) {
 		return superheroeService.updateState(id, "vivo");
 	}
 	
 	
-	//OPCION BORRAR
-	@DeleteMapping("/del/{id}")
+	/*
+	@DeleteMapping("/delete/{id}")
 	public void borrar(@PathVariable Integer id) {
 		 superheroeService.DeleteSuperById(id);
-	}
+	}*/
+	
+	//OPCION PARA BORRAR QUE PERMITE CONTROL SE LA EXCEPCION
+	@DeleteMapping("/delete/{id}")
+	public void borrar3(@PathVariable Integer id) {
+		 superheroeService.delete(id);
+	} 
 	
 	//ACTUALIZAR SUPERHEROE
 	@PutMapping("/update/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public Superheroe updateSuperheroe(@PathVariable Integer id,@RequestBody Superheroe superDatosActualizar) {
-		return superheroeService.updateSuper(id,superDatosActualizar);
+	public Superheroe updateSuperheroe(@PathVariable Integer id,
+			@RequestBody Superheroe superDatosActualizar) {
+		 return superheroeService.updateSuper(id,superDatosActualizar);
 	}
 	
 }
