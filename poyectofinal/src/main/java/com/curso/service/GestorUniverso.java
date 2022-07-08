@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.curso.entity.Poder;
 import com.curso.entity.Superheroe;
 import com.curso.entity.Universo;
+import com.curso.exceptions.ResourceInUseException;
+import com.curso.exceptions.ResourceNotFoundException;
 import com.curso.repo.UniversoRepoHibernateImplementation;
 import com.curso.repo.UniversoRepoSpringCRUD;
 
@@ -31,11 +33,14 @@ public class GestorUniverso {
 	
 	public Universo findbyId(Integer id) {
 		return universoRepoHB.findbyId(id);
+				
 	}
 	
-	public Optional<Universo> findbyIdCRUD(Integer id) {
-		return universoRepoCRUD.findById(id);
+	public Universo findByIdCRUD(Integer id){
+		return universoRepoCRUD.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
 	}
+	
 	//BORRAR POR ID
 	/*
 	public void delete(Integer id){
@@ -57,16 +62,16 @@ public class GestorUniverso {
 	}
 	
 	public void delete(Integer id) {
-		Universo univ = this.findbyIdCRUD(id)
-				.orElseThrow(()-> new IllegalArgumentException());
-		universoRepoCRUD.delete(univ);
+		Universo univ = this.findByIdCRUD(id);
+						
+	  universoRepoCRUD.delete(univ);
 	}
 	
 	
 	public Universo updateUniverso(Integer id, Universo universoDatos){
-		Optional<Universo> univOp = findbyIdCRUD(id);
+		Universo universo = findByIdCRUD(id);
 		//pasamos el optional a un obj de tipo superheroe
-		Universo universo = univOp.orElseThrow(()-> new IllegalArgumentException());
+		
 		//pasamos los datos que nos llegan por parametro al superheroe
 		universo.setNombre(universoDatos.getNombre());
 		return universoRepoCRUD.save(universo);

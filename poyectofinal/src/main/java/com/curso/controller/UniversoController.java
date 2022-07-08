@@ -35,6 +35,11 @@ public class UniversoController {
 		return universoService.findAllUniversosCRUD();
 	}
 	
+	@GetMapping("/{id}")
+	public Universo findbyIdCRUD(@PathVariable Integer id){
+		return universoService.findByIdCRUD(id);
+	}
+	
 	@PostMapping("/add")
 	public Universo create(@RequestBody Universo universo) {
 		return universoService.create(universo);

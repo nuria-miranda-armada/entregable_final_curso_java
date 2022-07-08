@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.curso.entity.Poder;
+import com.curso.entity.Superheroe;
 import com.curso.service.GestorPoder;
+import com.curso.service.GestorSuperheroes;
 
 @RestController
 @RequestMapping("/poder")
 public class PoderController {
 
+	@Autowired
+	private GestorSuperheroes superheroeService;
 	@Autowired
 	private GestorPoder poderService;
 	
@@ -33,13 +37,12 @@ public class PoderController {
 		
 	@GetMapping("/id/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Poder> getById(@PathVariable Integer id){
+	public Poder getById(@PathVariable Integer id){
 		return poderService.findPoderById(id);
 	}
 	
 	//AÑADIR PODER
 	@PostMapping("/add")
-	@ResponseStatus(HttpStatus.OK)
 	public Poder create(@RequestBody Poder poder) {
 		return poderService.create(poder);
 	}	
@@ -56,5 +59,7 @@ public class PoderController {
 	@RequestBody Poder poderDatosActualizar) {
 		return poderService.updatePoder(id,poderDatosActualizar);
 	}
+	
+	
 	
 }

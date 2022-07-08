@@ -18,8 +18,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -35,7 +37,7 @@ public class Poder implements Serializable {
 	@Column(name = "nombre", length = 50)
 	private String nombre;
 
-	 @ManyToMany(fetch = FetchType.LAZY,
+	 @ManyToMany(fetch = FetchType.EAGER,
 		      cascade = {
 		          CascadeType.PERSIST,
 		          CascadeType.MERGE
@@ -43,7 +45,22 @@ public class Poder implements Serializable {
 		      mappedBy = "poderes")
 		  @JsonIgnore
 		  private Set<Superheroe> superheroes = new HashSet<>();
-/*
+	 	
+	 public Set<Superheroe> getSuperheroes() {
+		    return superheroes;
+		  }
+	 
+	 public void setSuperheroes(Set<Superheroe> superheroes) {
+		    this.superheroes = superheroes;
+		  }  
+	 
+	 
+	 
+	 /*
+ * 
+ * 
+ * 
+ * 
 	 @OneToMany(mappedBy = "poder")
 	    List<SuperheroePoder>superheroePoder;
 */
