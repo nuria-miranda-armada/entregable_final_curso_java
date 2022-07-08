@@ -14,8 +14,8 @@ Desarrollar una API REST para Superheroes, usando:
  - En la aplicaión tendremos operaciones CRUD para todas las entidades.
 
 ### Arrancar el proyecto
--Es necesario disponer de Postgres 
--Al ejecutar SPring Boot se lanzará el proyecto y se creará la base de datos
+- Es necesario disponer de Postgres 
+- Al ejecutar Spring Boot se lanzará el proyecto y se creará la base de datos
 
 ### Consideraciones Adicionales
 -No se ha incluido el DTO, ya que se ha priorizado la realización de tests.
