@@ -50,9 +50,9 @@ public class SuperHeroeController{
 		return superheroeService.findAllSuperheroes();
 	}
 	
-	@GetMapping("/id/{id}")
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Superheroe> getById(@PathVariable Integer id){
+	public Superheroe getById(@PathVariable Integer id){
 		return superheroeService.findSuperById(id);
 	}
 	
@@ -95,8 +95,13 @@ public class SuperHeroeController{
 	
 	//OPCION PARA BORRAR QUE PERMITE CONTROL SE LA EXCEPCION
 	@DeleteMapping("/delete/{id}")
-	public void borrar3(@PathVariable Integer id) {
+	public void delete(@PathVariable Integer id) {
 		 superheroeService.delete(id);
+	} 
+	
+	@DeleteMapping("/deletepod/{id}")
+	public void deletePoder(@PathVariable Integer id) {
+		
 	} 
 	
 	//ACTUALIZAR SUPERHEROE

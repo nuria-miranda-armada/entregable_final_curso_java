@@ -6,8 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.curso.entity.Poder;
 import com.curso.entity.Superheroe;
 import com.curso.entity.Universo;
+import com.curso.exceptions.ResourceInUseException;
+import com.curso.exceptions.ResourceNotFoundException;
 import com.curso.repo.SuperheroeRepoJpa;
 
 @Service
@@ -20,8 +23,9 @@ public class GestorSuperheroes {
 		return superheroeRepo.findAll();
 	}
 		
-	public Optional<Superheroe>findSuperById(Integer id){
-		return superheroeRepo.findById(id);
+	public Superheroe findSuperById(Integer id){
+		return superheroeRepo.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
 	}
 	
 	public Superheroe create(Superheroe superheroe){
@@ -36,35 +40,36 @@ public class GestorSuperheroes {
 
 	
 	public Superheroe updateState(Integer id,String estado){
-		Optional<Superheroe> superOp = findSuperById(id);
+		Superheroe superheroe = findSuperById(id);
 		//superOp.get().setEstado(estado);
-		
-		Superheroe superheroe = superOp.orElseThrow(()-> new IllegalArgumentException());
 		superheroe.setEstado(estado);
 		 return superheroeRepo.save(superheroe);
 	
-		//TODO: Lanzar excepcion
-	
 	}
 	
-	//Opcion 1 borrar
+	/*
 	public void DeleteSuperById(Integer id){
 		superheroeRepo.deleteById(id);
 		
-	}
+	}*/
 	
-	//OPCION 2, AQUI CONTROLO YO LA EXCEPCIÓN
+	//opcion de borrar donde se controla la excepcion
 	public void delete(Integer id) {
-		Superheroe superheroe = this.findSuperById(id)
-				.orElseThrow(()-> new IllegalArgumentException());
+		Superheroe superheroe = this.findSuperById(id);
+			
+		if(!superheroe.getPoderes().isEmpty()) {
+			 throw new ResourceInUseException("Este superheroe está asignado a poderes. "
+			 		+ "Debes primero quitarle los poderes. Puedes hacerlo con update");
+		
+			}
 		superheroeRepo.delete(superheroe);
+		//}
 	}
 	
 	
 	public Superheroe updateSuper(Integer id,Superheroe superDatos){
-		Optional<Superheroe> superOp = findSuperById(id);
+		Superheroe superheroe  = findSuperById(id);
 		//pasamos el optional a un obj de tipo superheroe
-		Superheroe superheroe = superOp.orElseThrow(()-> new IllegalArgumentException());
 		//pasamos los datos que nos llegan por parametro al superheroe
 		superheroe.setNombre(superDatos.getNombre());
 		superheroe.setEstado(superDatos.getEstado());
@@ -74,5 +79,7 @@ public class GestorSuperheroes {
 	}
 	
 	
+	
+
 
 }

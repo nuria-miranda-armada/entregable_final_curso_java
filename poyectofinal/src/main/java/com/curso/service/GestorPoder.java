@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.curso.entity.Poder;
 import com.curso.entity.Superheroe;
+import com.curso.exceptions.ResourceInUseException;
+import com.curso.exceptions.ResourceNotFoundException;
 import com.curso.repo.PoderRepoCRUD;
 import com.curso.repo.SuperheroeRepoJpa;
 
@@ -21,8 +23,9 @@ public class GestorPoder {
 		return (List<Poder>) poderRepoService.findAll();
 	}
 		
-	public Optional<Poder>findPoderById(Integer id){
-		return poderRepoService.findById(id);
+	public Poder findPoderById(Integer id){
+		return poderRepoService.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
 	}
 	
 	public Poder create(Poder poder){
@@ -30,20 +33,18 @@ public class GestorPoder {
 	}
 	
 	public void delete(Integer id) {
-		Poder p = this.findPoderById(id)
-				.orElseThrow(()-> new IllegalArgumentException());
+		Poder p = this.findPoderById(id);
 		if(!p.getSuperheroes().isEmpty()) {
-			throw new IllegalArgumentException();
+		 throw new ResourceInUseException("Este poder está asignado a superhereoes, no se puede borrar  " + p.getSuperheroes());
 	
 		}
 		poderRepoService.delete(p);
 	}
 	
 	public Poder updatePoder(Integer id,Poder poderDatos){
-		Optional<Poder> poderOp = findPoderById(id);
-		
+		Poder poder = findPoderById(id);
 		//pasamos el optional a un obj de tipo poder
-		Poder poder = poderOp.orElseThrow(()-> new IllegalArgumentException());
+		//Poder poder = poderOp.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
 		//pasamos los datos que nos llegan por parametro al poder
 		poder.setNombre(poderDatos.getNombre());
 		

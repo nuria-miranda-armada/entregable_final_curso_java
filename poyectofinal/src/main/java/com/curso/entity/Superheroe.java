@@ -42,6 +42,7 @@ public class Superheroe implements Serializable{
 	@Column(name = "estado")
 	private String estado; 
 		
+
 	/*
 	//UNIMOS por la columna nombre con la tabla Universo
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -51,38 +52,43 @@ public class Superheroe implements Serializable{
 	//AL hacer la relacion, hibernate crea automaticamente una columna
 	//con el nombre puesto en @JoinCOlumn
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER,   cascade = {
+	          CascadeType.PERSIST,
+	          CascadeType.MERGE
+	      })
 	@JoinColumn(name = "id_universo")
 	private Universo universo;
 	
 	
-	@ManyToMany(fetch = FetchType.EAGER,
-		      cascade = {
-		          CascadeType.PERSIST,
-		          CascadeType.MERGE
-		      })
+	@ManyToMany(fetch = FetchType.EAGER,   cascade = {
+	          CascadeType.MERGE,
+	          CascadeType.PERSIST
+	     
+	      })
 	@JoinTable(name = "superheroe_poder",
 	        joinColumns = { @JoinColumn(name = "id_superheroe") },
 	        inverseJoinColumns = { @JoinColumn(name = "id_poder") })
+	
 	  private Set<Poder> poderes = new HashSet<>();
 	
+	/*
 	public void addPoder(Poder poder) {
 		this.poderes.add(poder);
 		poder.getSuperheroes().add(this);
 	}
+
 	
 	public void removePoder(Integer idPoder) {
 		Poder poder = this.poderes.stream()
-				.filter(p->p.getId()==idPoder).findFirst()
+				.filter(p->p.getId() == idPoder).findFirst()
 				.orElse(null);
 		if(poder!=null) {
 			this.poderes.remove(poder);
 			poder.getSuperheroes().remove(this);
 		}
-	
 	}
 	
-	/*
+		/*
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_poder")
 	private Poder poder;
