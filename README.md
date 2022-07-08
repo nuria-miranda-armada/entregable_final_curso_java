@@ -18,5 +18,5 @@ Desarrollar una API REST para Superheroes, usando:
 - Al ejecutar Spring Boot se lanzará el proyecto y se creará la base de datos
 
 ### Consideraciones Adicionales
--No se ha incluido el DTO, ya que se ha priorizado la realización de tests.
--Test: se ha intentado distribuir el tiempo entre test para poder incluir tanto test unitarios como algun test de integracion
+- No se ha incluido el DTO, ya que se ha priorizado la realización de tests.
+- Test: se ha intentado distribuir el tiempo entre test para poder incluir tanto test unitarios como algun test de integracion
