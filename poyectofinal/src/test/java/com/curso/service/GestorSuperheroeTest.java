@@ -127,7 +127,7 @@ public class GestorSuperheroeTest{
 		//comportamiento esperado
 		when(repository.save(superh)).thenReturn(superh);
 		//llamada a método a testear
-		Superheroe currentResult = service.create(superh);
+		Superheroe currentResult = service.old_create(superh);
 		//comprobaciones del resultado
 		assertThat(currentResult).isEqualTo(superh);
 	}

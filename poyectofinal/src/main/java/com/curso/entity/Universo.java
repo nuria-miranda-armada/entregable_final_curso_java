@@ -17,20 +17,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "universo")
 public class Universo {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	
+
 	@Column(name = "nombre", length = 50)
 	private String nombre;
 
-	
 	/*
-	@OneToMany
-	@JoinColumn(mappedBy)
-	private Superheroe superheroe;
-	*/
-	}
-
+	 * @OneToMany
+	 * 
+	 * @JoinColumn(mappedBy) private Superheroe superheroe;
+	 */
+}

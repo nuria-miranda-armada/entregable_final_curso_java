@@ -18,43 +18,42 @@ import com.curso.entity.Superheroe;
 import com.curso.entity.Universo;
 import com.curso.service.GestorUniverso;
 
-@RestController 
-@RequestMapping("/universo")
+@RestController
+@RequestMapping("/universos")
 public class UniversoController {
 
 	@Autowired
 	private GestorUniverso universoService;
-	
-	@GetMapping("/all")
-	public List<Universo> findAll(){
+
+	@GetMapping
+	public List<Universo> findAll() {
 		return universoService.findAllUniversos();
 	}
-	
+
 	@GetMapping("/allcrud")
-	public List<Universo> findAllCRUD(){
+	public List<Universo> findAllCRUD() {
 		return universoService.findAllUniversosCRUD();
 	}
-	
+
 	@GetMapping("/{id}")
-	public Universo findbyIdCRUD(@PathVariable Integer id){
+	public Universo findbyIdCRUD(@PathVariable Integer id) {
 		return universoService.findByIdCRUD(id);
 	}
-	
-	@PostMapping("/add")
+
+	@PostMapping
 	public Universo create(@RequestBody Universo universo) {
 		return universoService.create(universo);
 	}
 
-	//OPCION PARA BORRAR DONDE YO CONTROLO LA EXCEPCION
+	// OPCION PARA BORRAR DONDE YO CONTROLO LA EXCEPCION
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable Integer id) {
 		universoService.delete(id);
-	} 
-	
-	//ACTUALIZAR UNIVERSO
-	@PutMapping("/update/{id}")
-	public Universo updateUniverso(@PathVariable Integer id,
-			@RequestBody Universo universoDatosActualizar) {
-		 return universoService.updateUniverso(id,universoDatosActualizar);
+	}
+
+	// ACTUALIZAR UNIVERSO
+	@PutMapping("/{id}")
+	public Universo updateUniverso(@PathVariable Integer id, @RequestBody Universo universoDatosActualizar) {
+		return universoService.updateUniverso(id, universoDatosActualizar);
 	}
 }

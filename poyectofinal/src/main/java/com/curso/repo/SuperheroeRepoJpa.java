@@ -14,7 +14,8 @@ import com.curso.entity.Superheroe;
 @Repository
 public interface SuperheroeRepoJpa extends JpaRepository<Superheroe, Integer> {
 
-	List<Superheroe>findByNombreContaining(String nombre);
+	List<Superheroe> findByNombreContaining(String nombre);
+
 	List<Superheroe> findSuperheroesByPoderesId(Integer poderId);
 }
 //TODO: meter una query con Poder isNotEmpty ppara poder crear un metodo para eliminar los poderes

@@ -11,28 +11,28 @@ import com.curso.entity.Universo;
 
 //EL REPOSITORIO CREO QUE ESTÁ LISTO
 @Repository
-public class UniversoRepoHibernateImplementation implements UniversoRepoHibernate{
+public class UniversoRepoHibernateImplementation implements UniversoRepoHibernate {
 
-	@PersistenceContext 
+	@PersistenceContext
 	private EntityManager em;
-	
-	//LISTA UNIVERSOS
-	public List<Universo> findAll(){
-		return em.createQuery("FROM Universo",Universo.class).getResultList();
+
+	// LISTA UNIVERSOS
+	public List<Universo> findAll() {
+		return em.createQuery("FROM Universo", Universo.class).getResultList();
 	}
 
-	//BUSCA UNIVERSO POR ID
+	// BUSCA UNIVERSO POR ID
 	@Override
-	public Universo findbyId(Integer id) {
+	public Universo findById(Integer id) {
 		// TODO Auto-generated method stub
 		return em.find(Universo.class, id);
 	}
 
 	@Override
-		public List <Universo> findbyNombre(String nombre) {
+	public List<Universo> findByNombre(String nombre) {
 		// TODO Auto-generated method stub
 		return em.createQuery("FROM universo uni WHERE uni.nombre = :nombre", Universo.class)
-				.setParameter("nombre",nombre).getResultList();
+				.setParameter("nombre", nombre).getResultList();
 	}
 
 	@Override
@@ -42,16 +42,16 @@ public class UniversoRepoHibernateImplementation implements UniversoRepoHibernat
 	}
 
 	@Override
-	//merge guarda los datos si ya existen
+	// merge guarda los datos si ya existen
 	public Universo guardar(Universo universo) {
 		em.merge(universo);
-		return universo; 
+		return universo;
 	}
 
 	@Override
 	public Universo crear(Universo universo) {
-		em.persist(universo); //persist si los datos ya existen lanza una excepcion.
-		return universo; 
+		em.persist(universo); // persist si los datos ya existen lanza una excepcion.
+		return universo;
 	}
 
 	@Override
@@ -61,18 +61,14 @@ public class UniversoRepoHibernateImplementation implements UniversoRepoHibernat
 	}
 
 	@Override
-	public void DeleteUniverso(Integer id) {
+	public void deleteUniverso(Integer id) {
 		Universo universo = em.find(Universo.class, id);
 		em.remove(universo);
 	}
-	
+
 	@Override
 	public void delete(Universo universo) {
 		em.remove(universo);
 	}
-	
-	
-	
-	
-	
+
 }

@@ -15,41 +15,42 @@ import com.curso.repo.SuperheroeRepoJpa;
 
 @Service
 public class GestorPoder {
- //TODO: crear excepciones de recurso no encontrado y subtituir IllegalArg
+	// TODO: crear excepciones de recurso no encontrado y subtituir IllegalArg
 	@Autowired
 	private PoderRepoCRUD poderRepoService;
-		
-	public List<Poder> findAllPoderes(){
+
+	public List<Poder> findAllPoderes() {
 		return (List<Poder>) poderRepoService.findAll();
 	}
-		
-	public Poder findPoderById(Integer id){
+
+	public Poder findPoderById(Integer id) {
 		return poderRepoService.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
 	}
-	
-	public Poder create(Poder poder){
+
+	public Poder create(Poder poder) {
 		return poderRepoService.save(poder);
 	}
-	
+
 	public void delete(Integer id) {
 		Poder p = this.findPoderById(id);
-		if(!p.getSuperheroes().isEmpty()) {
-		 throw new ResourceInUseException("Este poder está asignado a superhereoes, no se puede borrar  " + p.getSuperheroes());
-	
+		if (!p.getSuperheroes().isEmpty()) {
+			throw new ResourceInUseException(
+					"Este poder está asignado a superhereoes, no se puede borrar  " + p.getSuperheroes());
+
 		}
 		poderRepoService.delete(p);
 	}
-	
-	public Poder updatePoder(Integer id,Poder poderDatos){
+
+	public Poder updatePoder(Integer id, Poder poderDatos) {
 		Poder poder = findPoderById(id);
-		//pasamos el optional a un obj de tipo poder
-		//Poder poder = poderOp.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
-		//pasamos los datos que nos llegan por parametro al poder
+		// pasamos el optional a un obj de tipo poder
+		// Poder poder = poderOp.orElseThrow(()-> new ResourceNotFoundException("No se
+		// encuentra el Poder con este id: " + id));
+		// pasamos los datos que nos llegan por parametro al poder
 		poder.setNombre(poderDatos.getNombre());
-		
+
 		return poderRepoService.save(poder);
 	}
-	
-	
+
 }

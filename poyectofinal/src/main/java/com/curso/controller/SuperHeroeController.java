@@ -24,91 +24,75 @@ import com.curso.entity.Universo;
 import com.curso.repo.SuperheroeRepoJpa;
 import com.curso.service.GestorSuperheroes;
 
-
 //CONTROLLER DE SUPERHEROE
 //AQUI USAMOS JPA
 @RestController
-@RequestMapping("/superheroe")
-public class SuperHeroeController{
-	
+@RequestMapping("/superheroes")
+public class SuperHeroeController {
+
 	@Autowired
 	private GestorSuperheroes superheroeService;
 
-	@GetMapping("/myapp/{name}")
-	public String MostrarAlgo(@PathVariable String name){
-		return "Hola "+name;	
-	}
-	
-	@GetMapping("/request")
-	public String Request(@RequestParam String name){
-		return "Hola "+name;	
-	}
-	
 	//OBTENCIÓN LISTA SUPERHEROES
-	@GetMapping("/all")
-	 public List <Superheroe> getAllSuperheroes(){
+	@GetMapping
+	public List<Superheroe> getAllSuperheroes() {
 		return superheroeService.findAllSuperheroes();
 	}
-	
+
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Superheroe getById(@PathVariable Integer id){
+	public Superheroe getById(@PathVariable Integer id) {
 		return superheroeService.findSuperById(id);
 	}
-	
-	
+
 	@GetMapping("/name/{nombre}")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Superheroe> getByNombrename(@PathVariable String nombre){
+	public List<Superheroe> getByNombrename(@PathVariable String nombre) {
 		return superheroeService.findByNombreContainingService(nombre);
 	}
 
-	
-	//AÑADIR SUPER
+	// AÑADIR SUPER
 	@PostMapping("/add")
+	@ResponseStatus(HttpStatus.OK)
+	public Superheroe old_create(@RequestBody Superheroe superheroe) {
+		return superheroeService.old_create(superheroe);
+	}
+	
+	// AÑADIR SUPER
+	@PostMapping
 	@ResponseStatus(HttpStatus.OK)
 	public Superheroe create(@RequestBody Superheroe superheroe) {
 		return superheroeService.create(superheroe);
 	}
-	
-	
-	
-	//OPCION MATAR
+
+	// OPCION MATAR
 	@PutMapping("/matar/{id}")
 	public Superheroe matar(@PathVariable Integer id) {
 		return superheroeService.updateState(id, "muerto");
 	}
-	
-	
-	//OPCION REVIVIR4
+
+	// OPCION REVIVIR4
 	@PutMapping("/revivir/{id}")
 	public Superheroe revivir(@PathVariable Integer id) {
 		return superheroeService.updateState(id, "vivo");
 	}
-	
-	
-	/*
-	@DeleteMapping("/delete/{id}")
-	public void borrar(@PathVariable Integer id) {
-		 superheroeService.DeleteSuperById(id);
-	}*/
-	
-	//OPCION PARA BORRAR QUE PERMITE CONTROL SE LA EXCEPCION
-	@DeleteMapping("/delete/{id}")
+
+
+	// OPCION PARA BORRAR QUE PERMITE CONTROL SE LA EXCEPCION
+	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id) {
-		 superheroeService.delete(id);
-	} 
-	
+		superheroeService.delete(id);
+	}
+
 	@DeleteMapping("/deletepod/{id}")
 	public void deletePoder(@PathVariable Integer id) {
-		
-	} 
-	
-	//ACTUALIZAR SUPERHEROE
-	@PutMapping("/update/{id}")
-	public Superheroe updateSuperheroe(@PathVariable Integer id,
-			@RequestBody Superheroe superDatosActualizar) {
-		 return superheroeService.updateSuper(id,superDatosActualizar);
+
 	}
-	
+
+	// ACTUALIZAR SUPERHEROE
+	@PutMapping("/{id}")
+	public Superheroe updateSuperheroe(@PathVariable Integer id, @RequestBody Superheroe superDatosActualizar) {
+		return superheroeService.updateSuper(id, superDatosActualizar);
+	}
+
 }

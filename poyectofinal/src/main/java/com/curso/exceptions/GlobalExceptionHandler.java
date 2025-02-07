@@ -19,7 +19,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 //Controla cuando se intenta borrar un recurso que está siendo referenciado en otra tabla
 	//ej: Intento borrar un poder que tiene un superheroe
 	@ExceptionHandler(ResourceInUseException.class)
-	public ResponseEntity<?> resourceNotFoundEception(ResourceInUseException ex,
+	public ResponseEntity<?> resourceInUseException(ResourceInUseException ex,
 			WebRequest request){
 		ErrorDetails errorDetails =  new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);

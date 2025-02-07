@@ -1,5 +1,6 @@
 package com.curso.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +13,16 @@ import com.curso.entity.Universo;
 import com.curso.exceptions.ResourceInUseException;
 import com.curso.exceptions.ResourceNotFoundException;
 import com.curso.repo.SuperheroeRepoJpa;
+import com.curso.repo.UniversoRepoHibernate;
 
 @Service
 public class GestorSuperheroes {
 	
 	@Autowired
 	private SuperheroeRepoJpa superheroeRepo;
+	
+	@Autowired
+	private UniversoRepoHibernate universoRepo;
 	
 	public List<Superheroe> findAllSuperheroes(){
 		return superheroeRepo.findAll();
@@ -28,10 +33,31 @@ public class GestorSuperheroes {
 				.orElseThrow(()-> new ResourceNotFoundException("No se encuentra el Poder con este id: " + id));
 	}
 	
-	public Superheroe create(Superheroe superheroe){
+	public Superheroe old_create(Superheroe superheroe){
 		return superheroeRepo.save(superheroe);
 		
 	}
+	
+	public Superheroe create(Superheroe superheroe) {
+	    if (superheroe.getUniverso() != null && superheroe.getUniverso().getId() != null) {
+	        // Ensure Universo exists in DB before saving Superheroe
+	        Universo existingUniverso = universoRepo.findById(superheroe.getUniverso().getId());
+	        
+	        if (existingUniverso == null) {
+	            throw new ResourceNotFoundException("Universo no encontrado con ID: " + superheroe.getUniverso().getId());
+	        }
+
+	        superheroe.setUniverso(existingUniverso); // Attach existing Universo
+	    }
+	    
+	    if (superheroe.getPoderes() == null) {
+	        superheroe.setPoderes(new HashSet<>());
+	    }
+	    
+	    
+	    return superheroeRepo.save(superheroe);
+	}
+	
 	
 	public List<Superheroe>findByNombreContainingService(String nombre){
 		return superheroeRepo.findByNombreContaining(nombre);
@@ -77,6 +103,7 @@ public class GestorSuperheroes {
 		superheroe.setPoderes(superDatos.getPoderes());
 		return superheroeRepo.save(superheroe);
 	}
+	
 	
 	
 	

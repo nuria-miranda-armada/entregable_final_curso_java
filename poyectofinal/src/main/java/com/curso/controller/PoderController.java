@@ -21,45 +21,42 @@ import com.curso.service.GestorPoder;
 import com.curso.service.GestorSuperheroes;
 
 @RestController
-@RequestMapping("/poder")
+@RequestMapping("/poderes")
 public class PoderController {
 
 	@Autowired
 	private GestorSuperheroes superheroeService;
 	@Autowired
 	private GestorPoder poderService;
-	
-	//OBTENCIÓN LISTA SUPERHEROES
-	@GetMapping("/all")
-	public List <Poder> getAll(){
+
+	// OBTENCIÓN LISTA DE PODERES
+	@GetMapping
+	public List<Poder> getAll() {
 		return poderService.findAllPoderes();
 	}
-		
-	@GetMapping("/id/{id}")
+
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Poder getById(@PathVariable Integer id){
+	public Poder getById(@PathVariable Integer id) {
 		return poderService.findPoderById(id);
 	}
-	
-	//AÑADIR PODER
+
+	// AÑADIR PODER
 	@PostMapping("/add")
 	public Poder create(@RequestBody Poder poder) {
 		return poderService.create(poder);
-	}	
-	
-	//OPCION PARA BORRAR DONDE YO CONTROLO LA EXCEPCION
+	}
+
+	// OPCION PARA BORRAR DONDE YO CONTROLO LA EXCEPCION
 	@DeleteMapping("/delete/{id}")
 	public void delete(@PathVariable Integer id) {
 		poderService.delete(id);
-	} 
-	
-	//ACTUALIZAR PODER
-	@PutMapping("/update/{id}")
-	public Poder updatePoder(@PathVariable Integer id,
-	@RequestBody Poder poderDatosActualizar) {
-		return poderService.updatePoder(id,poderDatosActualizar);
 	}
-	
-	
-	
+
+	// ACTUALIZAR PODER
+	@PutMapping("/update/{id}")
+	public Poder updatePoder(@PathVariable Integer id, @RequestBody Poder poderDatosActualizar) {
+		return poderService.updatePoder(id, poderDatosActualizar);
+	}
+
 }
